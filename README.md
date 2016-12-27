@@ -44,3 +44,6 @@ more info about surround query and span query.
 
 https://lucidworks.com/blog/2009/07/18/the-spanquery/
 
+ES issue about this kind parser.
+
+https://github.com/elastic/elasticsearch/issues/11328
