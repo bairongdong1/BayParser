@@ -17,6 +17,7 @@ I would try to do this install more normally in the future.
 
 And the test query could be this, text is the target field(one field named text)
 
+this example do something like match_phrase query.
 http://192.168.7.235:9200/test2/_search
 ```
 {
@@ -25,7 +26,7 @@ http://192.168.7.235:9200/test2/_search
             "must":[
                 {
                     "bay_query" :{
-                        "text":"3w(荧,光,剂)"
+                        "text":"w(荧,光,剂)"
                      }
                 }
             ]
@@ -33,6 +34,33 @@ http://192.168.7.235:9200/test2/_search
     }
 }
 ```
+
+
+this example means, "free,cost,hot" this is three word must be divided parts of your analyzer, the three words also should connect in row. 
+ie."free cost heart hot" is invalid.
+"good plan" should be in a row.
+
+"free cost hot" should has near with "good plan", two words seperated most.
+"free cost hot a fox good plan" is valid
+"free cost hot a fox hotel good plan" is invalid
+"free cost a hot hotel good plan" is invalid
+```
+{
+    "query": {
+        "bool":{
+            "must":[
+                {
+                    "bay_query" :{
+                        "text":"3w(w(free,cost,hot), w(good, plan))"
+                     }
+                }
+            ]
+        }
+    }
+}
+```
+
+the benchmark perform in ngram=1, 2(min 1, max 2) is not that bad , Chinese docs(80 words per doc maybe) could be handled in my mac book(SSD disk) with memory 300MB, query finished in 500ms(sometimes 100ms).
 
 not implement escape characters or other special args now.
 
